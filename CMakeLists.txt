@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 3.0)
+project(AT89ISP)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+find_package(Qt5Widgets)
+find_package(Qt5SerialPort)
+
+add_definitions(-DUNICODE -D_UNICODE)
+file(GLOB SOURCE . *.cpp *.h)
+add_executable(AT89ISP WIN32 ${SOURCE})
+
+target_link_libraries(AT89ISP PRIVATE Qt5::Widgets Qt5::SerialPort)
+find_path(QHEXEDIT_INCLUDE_DIR qhexedit.h PATH_SUFFIXES include src)
+find_library(QHEXEDIT_LIBRARY_DBG qhexedit2 PATH_SUFFIXES build.osx build/Debug)
+find_library(QHEXEDIT_LIBRARY_REL qhexedit2 PATH_SUFFIXES build.osx build/Release)
+target_include_directories(AT89ISP PRIVATE ${QHEXEDIT_INCLUDE_DIR})
+target_link_libraries(AT89ISP PRIVATE debug ${QHEXEDIT_LIBRARY_DBG})
+target_link_libraries(AT89ISP PRIVATE optimized ${QHEXEDIT_LIBRARY_REL})
