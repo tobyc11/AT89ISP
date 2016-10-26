@@ -9,7 +9,7 @@ find_package(Qt5Widgets)
 find_package(Qt5SerialPort)
 
 add_definitions(-DUNICODE -D_UNICODE)
-file(GLOB SOURCE . *.cpp *.h)
+file(GLOB SOURCE *.cpp *.h *.rc)
 add_executable(AT89ISP WIN32 ${SOURCE})
 
 target_link_libraries(AT89ISP PRIVATE Qt5::Widgets Qt5::SerialPort)

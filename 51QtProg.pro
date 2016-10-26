@@ -21,5 +21,7 @@ HEADERS  += MainWindow.h \
 
 FORMS    += MainWindow.ui
 
+RC_FILE += AT89ISP.rc
+
 LIBS += E:/Dev/qhexedit2/build/Release/qhexedit2.lib
 INCLUDEPATH += E:/Dev/qhexedit2/src
