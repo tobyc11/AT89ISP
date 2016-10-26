@@ -8,15 +8,16 @@
 #include "intelhexclass.h"
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+	QMainWindow(parent),
+	ui(new Ui::MainWindow),
+	serialPort(nullptr),
+	EEPROMPages(16)
 {
-    ui->setupUi(this);
-    serialPort = nullptr;
-    querySerialPorts();
-    hexEdit = new QHexEdit(this);
-    hexEdit->setMinimumWidth(800);
-    ui->centralWidget->layout()->addWidget(hexEdit);
+	ui->setupUi(this);
+	querySerialPorts();
+	hexEdit = new QHexEdit(this);
+	hexEdit->setMinimumWidth(800);
+	ui->centralWidget->layout()->addWidget(hexEdit);
 }
 
 MainWindow::~MainWindow()
@@ -37,6 +38,7 @@ void MainWindow::on_serialConnect_clicked()
     }
     else
     {
+		//serialPort->flush();
         serialPort->close();
         delete serialPort;
         serialPort = nullptr;
@@ -100,13 +102,28 @@ void MainWindow::on_actionOpen_Program_triggered()
     }
 }
 
+void MainWindow::on_action4K_triggered()
+{
+	EEPROMPages = 16;
+	ui->action4K->setChecked(true);
+	ui->action8K->setChecked(false);
+}
+
+void MainWindow::on_action8K_triggered()
+{
+	EEPROMPages = 32;
+	ui->action4K->setChecked(false);
+	ui->action8K->setChecked(true);
+}
+
+
 void MainWindow::on_readButton_clicked()
 {
     if(serialPort)
     {
         QByteArray data;
         serialPort->write("oe");
-        for(uint8_t i = 0; i < 16; i++)
+        for(uint8_t i = 0; i < EEPROMPages; i++)
         {
             QByteArray combo;
             combo.push_back('x');
@@ -115,9 +132,9 @@ void MainWindow::on_readButton_clicked()
             combo.push_back('r');
             serialPort->write(combo);
             serialPort->waitForBytesWritten(1000);
-
-            while(serialPort->waitForReadyRead(100))
-                data.append(serialPort->readAll());
+			while (serialPort->waitForReadyRead(100))
+				data.append(serialPort->readAll());
+			ui->statusBar->showMessage(QString("Read page: ") + QString::number(i));
         }
         serialPort->write("c");
         hexEdit->setData(data);
@@ -146,9 +163,9 @@ void MainWindow::on_downloadButton_clicked()
             serialPort->waitForBytesWritten(1000);
             while(serialPort->waitForReadyRead(100))
                 data.append(serialPort->readAll());
+			ui->statusBar->showMessage(QString(data));
         }
         serialPort->write("c");
-        ui->statusBar->showMessage(QString(data));
     }
 }
 
@@ -170,6 +187,7 @@ void MainWindow::querySerialPorts()
 {
     for(auto* p : serialLabels)
         delete p;
+	serialLabels.clear();
     ui->serialCombo->clear();
 
     auto* layout = ui->serialLayout;

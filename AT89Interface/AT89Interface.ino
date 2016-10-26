@@ -2,9 +2,9 @@
 #define RDY 75
 #define NRDY 76
 
-const int _MISO = 12;
-const int _MOSI = 11;
-const int _CLK = 13;
+const int _MISO = 12; //7
+const int _MOSI = 11; //6
+const int _CLK = 13; //8
 const int RST = 10;
 
 uint8_t currentPage = 0;

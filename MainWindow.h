@@ -24,6 +24,8 @@ private slots:
     void on_serialConnect_clicked();
     void on_idButton_clicked();
     void on_actionOpen_Program_triggered();
+	void on_action4K_triggered();
+	void on_action8K_triggered();
     void on_readButton_clicked();
     void on_downloadButton_clicked();
     void on_eraseButton_clicked();
@@ -36,6 +38,8 @@ private:
     QSerialPort* serialPort;
     QByteArray programBinary;
     QHexEdit* hexEdit;
+
+	int EEPROMPages;
 };
 
 #endif // MAINWINDOW_H

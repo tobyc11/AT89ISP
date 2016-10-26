@@ -84,12 +84,39 @@
     </property>
     <addaction name="actionOpen_Program"/>
    </widget>
+   <widget class="QMenu" name="menuChip">
+    <property name="title">
+     <string>Chip</string>
+    </property>
+    <addaction name="action4K"/>
+    <addaction name="action8K"/>
+   </widget>
    <addaction name="menuApp"/>
+   <addaction name="menuChip"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionOpen_Program">
    <property name="text">
     <string>Open Program</string>
+   </property>
+  </action>
+  <action name="action4K">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>4K</string>
+   </property>
+  </action>
+  <action name="action8K">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>8K</string>
    </property>
   </action>
  </widget>
